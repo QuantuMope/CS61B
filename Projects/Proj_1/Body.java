@@ -74,6 +74,29 @@ public class Body{
         return forceY;
     }
 
+    public double calcNetForceExertedByX(Body[] planets){
+        double sumForceX = 0;
+        for (Body planet : planets){
+            if (this.equals(planet)){
+                continue;
+            }
+            sumForceX += calcForceExertedByX(planet);
+        }
+        return sumForceX;
+    }
+
+    public double calcNetForceExertedByY(Body[] planets){
+        double sumForceY = 0;
+        for (Body planet : planets){
+            if (this.equals(planet)){
+                continue;
+            }
+            sumForceY += calcForceExertedByY(planet);
+        }
+        return sumForceY;
+    }
+
+
     public void update(double seconds, double forceX, double forceY){
         double acc, accX, accY;
         accX = forceX / this.mass;

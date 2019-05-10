@@ -1,10 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class NBody{
-
-    public static final int planetAmount = 5;
 
     public static double readRadius(String fileName){
         In in = new In(fileName);
@@ -19,8 +13,8 @@ public class NBody{
         int list_length = in.readInt();
         double radius = in.readDouble();
 
-        Body planets[] = new Body[planetAmount];
-        for (int i = 0; i < planetAmount; i++){
+        Body planets[] = new Body[5];
+        for (int i = 0; i < planets.length; i++){
             double xxPos = in.readDouble();
             double yyPos = in.readDouble();
             double xxVel = in.readDouble();
@@ -41,68 +35,44 @@ public class NBody{
         String fileName = "data/planets.txt";   //args[2];
         In in = new In(fileName);
 
-        // Draw the background.
+        // Prep for background.
         double radius = readRadius(fileName);
         StdDraw.setScale(-radius, radius);
-
         String imageToDraw = "images/starfield.jpg";
 
-        StdDraw.picture(0, 0, imageToDraw);
-
-        // Drawing the planets.
+        // Initialize necessary arrays.
         StdDraw.enableDoubleBuffering();
         Body[] planets = readBodies(fileName);
-
-        for (Body planet : planets){
-            planet.draw();
-            StdDraw.show();
-        }
-        StdDraw.pause(2000);
-
         double[] xForces = new double[planets.length];
         double[] yForces = new double[planets.length];
-        double sumForceX = 0;
-        double sumForceY = 0;
-        int index = 0;
 
+        // Simulate through animation.
         for (double time = 0; time < T; time += dt){
+            // Clear image.
             StdDraw.clear();
             StdDraw.picture(0, 0, imageToDraw);
-            for (Body planet : planets){
-                for (int i = 0; i < 5; i++){
-                    if (i == index){
-                        continue;
-                    }
-                    sumForceX += planet.calcForceExertedByX(planets[i]);
-                    sumForceY += planet.calcForceExertedByY(planets[i]);
-                    System.out.println(planet.calcForceExertedByX(planets[i]));
-                
-                }
-                xForces[index] = sumForceX;
-                yForces[index] = sumForceY;
 
-                sumForceX = 0;
-                sumForceY = 0;
-                index++;
-                if (index == planetAmount - 1){
-                    index = 0;
-                }
-
+            for (int p = 0; p < planets.length; p++) {
+                xForces[p] = planets[p].calcNetForceExertedByX(planets);
+                yForces[p] = planets[p].calcNetForceExertedByY(planets);
             }
-            index = 0;
-            for (Body planet : planets){
-                planet.update(dt, xForces[index], yForces[index]);
-                planet.draw();
-                index++;
-                if (index == planetAmount - 1){
-                    index = 0;
-                }
 
+            for (int p = 0; p < planets.length; p++){
+                planets[p].update(dt, xForces[p], yForces[p]);
+                planets[p].draw();
             }
             StdDraw.show();
             StdDraw.pause(10);
 
         }
 
+        // Print final values.
+        StdOut.printf("%d\n", planets.length);
+        StdOut.printf("%.2e\n", radius);
+        for (int p = 0; p < planets.length; p++) {
+            StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
+                  planets[p].xxPos, planets[p].yyPos, planets[p].xxVel,
+                  planets[p].yyVel, planets[p].mass, planets[p].imgFileName);
+        }
     }
 }

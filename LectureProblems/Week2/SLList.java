@@ -1,54 +1,54 @@
-public class SLList{
+public class SLList<inputType>{
 
-    private static class IntNode{
-        public int node;
-        public IntNode next;
+    private class Node {
+        public inputType value;
+        public Node next;
 
-        public IntNode(int f, IntNode r){
-            node = f;
+        public Node(inputType f, Node r){
+            value = f;
             next = r;
         }
 
     }
-    private IntNode sentinel = new IntNode(63, null);
+    private Node sentinel = new Node(null, null);
     public int size;
 
     public SLList(){
         size = 0;
     }
 
-    public SLList(int x){
-        sentinel.next = new IntNode(x, null);
+    public SLList(inputType x){
+        sentinel.next = new Node(x, null);
         size = 1;
     }
 
     // Adds x to the front of the list.
-    public void addFirst(int x){
-        sentinel.next = new IntNode(x, sentinel.next);
+    public void addFirst(inputType x){
+        sentinel.next = new Node(x, sentinel.next);
         size += 1;
     }
 
     // Gets the first value in the list.
-    public int getFirst() {
+    public inputType getFirst() {
         if (sentinel.next != null) {
-            return sentinel.next.node;
+            return sentinel.next.value;
         }
-        return 0;
+        return null;
     }
 
 
-    public void addLast(int x){
+    public void addLast(inputType x){
         size += 1;
-        IntNode p = sentinel;
+        Node p = sentinel;
 
         while (p.next != null){
             p = p.next;
         }
-        p.next = new IntNode(x, null);
+        p.next = new Node(x, null);
     }
 
-//    private static int size(IntNode p){
-//        if (p.node == null){
+//    private static int size(Node p){
+//        if (p.value == null){
 //            return 0;
 //        }
 //        else if (p.next == null){
@@ -66,7 +66,7 @@ public class SLList{
     }
 
     public static void main (String[] args){
-        SLList L = new SLList(10);
+        SLList<Integer> L = new SLList<>(10);
         L.addFirst(10);
         L.addFirst(5);
         System.out.println(L.getFirst());
@@ -75,7 +75,7 @@ public class SLList{
         System.out.println(L.size());
 
         // Create an empty list.
-        SLList X = new SLList();
+        SLList<Integer> X = new SLList<>();
         System.out.println(X.size());
         X.addLast(20);
         System.out.println(X.size());

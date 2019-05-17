@@ -31,4 +31,45 @@ public class Palindrome {
         return true;
     }
 
+    /** Recursive implementation of isPalindrome.
+     */
+    public boolean isPalindromeRec(String word){
+        Palindrome palindrome = new Palindrome();
+        Deque<Character> wordDeque = palindrome.wordToDeque(word);
+        return isPalindromeRecHelper(wordDeque);
+    }
+
+    /** Recursive helper of isPalindromeRec.
+     */
+    private boolean isPalindromeRecHelper(Deque x){
+        if (x.size() == 1 || x.size() == 0){
+            return true;
+        }
+        else if (x.removeFirst() == x.removeLast()){
+            return isPalindromeRecHelper(x);
+        }
+        return false;
+    }
+
+    /** isPalindrome method with a character comparator.
+     */
+    public boolean isPalindrome(String word, CharacterComparator cc){
+        Palindrome palindrome = new Palindrome();
+        Deque<Character> wordDeque = palindrome.wordToDeque(word);
+        return isPalindromeRecHelper(wordDeque, cc);
+    }
+
+    /** Recursive helper for isPalindrome method with a character comparator.
+     */
+    private boolean isPalindromeRecHelper(Deque x, CharacterComparator cc){
+        if (x.size() == 1 || x.size() == 0){
+            return true;
+        }
+        else if (cc.equalChars((char) x.removeFirst(), (char) x.removeLast())){
+            return isPalindromeRecHelper(x, cc);
+        }
+        return false;
+    }
 }
+
+

@@ -1,7 +1,10 @@
 # CS61B Data Structures 
+
+Below is the course description/details. Completed the course assignments as a personal challenge and to learn more about data structures.
+
 * * *
 
-@ UCB, Spring 2018  
+@ UCB, Spring 2019  
 @ Instructor: [Josh Hug](https://www2.eecs.berkeley.edu/Faculty/Homepages/joshhug.html)   
 @ [Course Website](https://sp18.datastructur.es/index.html)  
 @ [Java Visualizer](https://cscircles.cemc.uwaterloo.ca/java_visualize/)

@@ -1,3 +1,9 @@
+/**
+ * NBody class simulates planetary simulation for different planets.
+ *
+ * @author Andrew Choi
+ * @Date 05/10/19
+ */
 public class NBody{
 
     public static double readRadius(String fileName){
@@ -13,7 +19,7 @@ public class NBody{
         int list_length = in.readInt();
         double radius = in.readDouble();
 
-        Body planets[] = new Body[5];
+        Body[] planets = new Body[5];
         for (int i = 0; i < planets.length; i++){
             double xxPos = in.readDouble();
             double yyPos = in.readDouble();

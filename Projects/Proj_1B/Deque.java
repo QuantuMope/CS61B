@@ -1,6 +1,7 @@
 /**
  * Deque Interface for LinkedListDeque and ArrayDeque classes.
- * @param <Type>
+ * @author Andrew Choi
+ * Date: 05/17/2019
  */
 
 public interface Deque<Type> {

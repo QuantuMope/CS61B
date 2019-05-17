@@ -1,3 +1,12 @@
+/**
+ * Create Body class that acts as a planet.
+ * Contains methods with interaction simulation based on physics.
+ * Used in NBody to create planetary interactions.
+ *
+ * @author Andrew Choi
+ * @Date 05/10/19
+ */
+
 import java.lang.*;
 
 public class Body{

@@ -1,3 +1,9 @@
+/**
+ * Palindrome class with methods pertaining checking if a String in put is a palindrome.
+ * @author Andrew Choi
+ * Date: 05/17/2019
+ */
+
 public class Palindrome {
 
     /** Transforms string to a Deque of characters and returns it.
@@ -5,9 +11,24 @@ public class Palindrome {
     public Deque<Character> wordToDeque(String word){
         Deque<Character> output = new LinkedListDeque<>();
         for (int i = 0; i < word.length(); i++){
-            output.addFirst(word.charAt(i));
+            output.addLast(word.charAt(i));
         }
         return output;
+    }
+
+    /** Checks to see if a String input is a palindrome and returns a bool.
+     */
+    public boolean isPalindrome(String word){
+        Palindrome palindrome = new Palindrome();
+        Deque<Character> wordDeque = palindrome.wordToDeque(word);
+        for (int i = 0; i < word.length()/2; i++){
+            if (wordDeque.get(i) == wordDeque.get(word.length()-1-i)){
+                assert true;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

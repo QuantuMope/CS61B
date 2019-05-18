@@ -29,6 +29,8 @@ public class TestPalindrome {
         assertTrue(palindrome.isPalindromeRec("redivider"));
         assertFalse(palindrome.isPalindromeRec("tuberculosis"));
         assertTrue(palindrome.isPalindromeRec("noon"));
+        assertTrue(palindrome.isPalindromeRec("tattarrattat"));
+        assertTrue(palindrome.isPalindrome("tattarrattat"));
     }
 
     @Test

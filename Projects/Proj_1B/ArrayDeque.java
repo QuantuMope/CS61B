@@ -145,7 +145,7 @@ public class ArrayDeque<Type> implements Deque<Type>{
     private void removeSpace(){
         double uf_size = (double) size;
         double usage_factor = uf_size / items.length;
-        if (usage_factor <= 0.25){
+        if (usage_factor <= 0.25 && size > 8){
             Type[] new_items = (Type[]) new Object[items.length/2];
             if (nextLast > nextFirst){
                 System.arraycopy(items, nextFirst+1, new_items, 0, size);
@@ -167,7 +167,7 @@ public class ArrayDeque<Type> implements Deque<Type>{
         if (i > size){
             return null;
         }
-        if (i+nextFirst+1 > items.length){
+        if (i+nextFirst+1 >= items.length){
             return items[(i-(items.length-nextFirst-1))];
         }
         return items[i+nextFirst+1];

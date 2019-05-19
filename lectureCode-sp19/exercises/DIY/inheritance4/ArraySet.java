@@ -21,12 +21,10 @@ public class ArraySet<T> implements Iterable<T>{
             pos = 0;
         }
 
-        @Override
         public boolean hasNext(){
             return pos < size;
         }
 
-        @Override
         public T next(){
             T returnItem = items[pos];
             pos += 1;
@@ -58,6 +56,60 @@ public class ArraySet<T> implements Iterable<T>{
     /* Returns the number of key-value mappings in this map. */
     public int size() {
         return size;
+    }
+
+//     //Use StringBuilder when creating strings through a for loop.
+//     //Concatenating strings is very inefficient, takes quadratic time as string lengthens.
+//     //Whereas, StringBuilder is linear.
+//    @Override
+//    public String toString(){
+//        StringBuilder returnSB = new StringBuilder("{");
+//        for (int i = 0; i < size-1; i++){
+//            returnSB.append(items[i]);
+//            returnSB.append(", ");
+//        }
+//        returnSB.append(items[size-1] + "}");
+//        return returnSB.toString();
+//    }
+
+    @Override
+    public String toString() {
+        List<String> listOfItems = new ArrayList<>();
+        for (T x : this) {
+            listOfItems.add(x.toString());
+        }
+        return String.join(", ", listOfItems);
+    }
+
+    public static <Glerp> ArraySet<Glerp> of(Glerp... stuff) {
+        ArraySet<Glerp> returnSet = new ArraySet<Glerp>();
+        for (Glerp x : stuff) {
+            returnSet.add(x);
+        }
+        return returnSet;
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if (this == other){
+            return true;
+        }
+        if (other == null) {
+            return false;
+        }
+        if (other.getClass() != this.getClass()) {
+            return false;
+        }
+        ArraySet<T> o = (ArraySet<T>) other;
+        if (o.size() != this.size()){
+            return false;
+        }
+        for (T item: this){
+            if (!o.contains(item)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void main(String[] args) {
@@ -101,7 +153,19 @@ public class ArraySet<T> implements Iterable<T>{
             System.out.println(i);
         }
 
+        // Println methods auto call the .toString() method, so it is not necessary to type out.
+        System.out.println(aset);
+        System.out.println(aset.toString());
 
+        ArraySet<Integer> other = new ArraySet<>();
+        other.add(5);
+        other.add(23);
+        other.add(42);
+
+        System.out.println(aset.equals(other));
+
+        ArraySet<String> asetofStrings = ArraySet.of("hi", "I'm", "here.");
+        System.out.println(asetofStrings);
 
 
     }

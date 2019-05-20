@@ -141,11 +141,11 @@ public class ArraySet<T> implements Iterable<T>{
         aset.add(23);
         aset.add(42);
 
-        Iterator<Integer> aseer = aset.iterator();
-        while (aseer.hasNext()){
-            int i = aseer.next();
-            System.out.println(i);
-        }
+//        Iterator<Integer> aseer = aset.iterator();
+//        while (aseer.hasNext()){
+//            int i = aseer.next();
+//            System.out.println(i);
+//        }
 
         // Must implement Iterable interface and have the necessary
         // Iterator<T> iterator() method for enhanced for loop to work properly.

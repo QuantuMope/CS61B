@@ -12,7 +12,7 @@ public interface BoundedQueue<T> {
     void enqueue(T x);
 
     /** Delete and return item from the front. */
-    T deque();
+    T dequeue();
 
     /** Return (but do not delete) item from the front. */
     T peek();
@@ -20,13 +20,13 @@ public interface BoundedQueue<T> {
     /** Checks to see whether or not the buffer is empty.
      * i.e. fillCount equals zero? */
     default boolean isEmpty() {
-        return true;
+        return fillCount() == 0;
     }
 
     /** Checks to see if the buffer is full.
      * i.e. fillCount is same as capacity? */
     default boolean isFull() {
-        return true;
+        return fillCount() == capacity();
     }
 
 }

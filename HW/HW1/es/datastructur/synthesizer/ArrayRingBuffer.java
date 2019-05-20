@@ -1,8 +1,12 @@
 package es.datastructur.synthesizer;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-//TODO: Make sure to that this class and all of its methods are public
-//TODO: Make sure to add the override tag for all overridden methods
+/**
+ * @author Andrew Choi
+ * Date: 05/20/2019
+ */
 
 public class ArrayRingBuffer<T> implements BoundedQueue<T> {
     /* Index for the next dequeue or peek. */
@@ -18,8 +22,6 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
      * Create a new ArrayRingBuffer with the given capacity.
      */
     public ArrayRingBuffer(int capacity) {
-        // TODO: Create new array with capacity elements.
-        //       first, last, and fillCount should all be set to 0.
         rb = (T[]) new Object[capacity];
         first = last = fillCount = 0;
     }
@@ -43,8 +45,6 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
      * throw new RuntimeException("Ring buffer overflow").
      */
     public void enqueue(T x) {
-        // TODO: Enqueue the item. Don't forget to increase fillCount and update
-        //       last.
         if (isFull()) {
             throw new RuntimeException("Ring buffer overflow.");
         }
@@ -61,8 +61,6 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
      * throw new RuntimeException("Ring buffer underflow").
      */
     public T dequeue() {
-        // TODO: Dequeue the first item. Don't forget to decrease fillCount and
-        //       update first.
         if (isEmpty()) {
             throw new RuntimeException("Ring buffer underflow.");
         }
@@ -81,8 +79,6 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
      * throw new RuntimeException("Ring buffer underflow").
      */
     public T peek() {
-        // TODO: Return the first item. None of your instance variables should
-        //       change.
         if (isEmpty()) {
             throw new RuntimeException("Ring buffer underflow.");
         }
@@ -92,7 +88,81 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
         return rb[first];
     }
 
-    // TODO: When you get to part 4, implement the needed code to support
-    //       iteration and equals.
+    /**
+     * Create an iterator method to allow the ArrayRingBuffer to be Iterable.
+     */
+    public Iterator<T> iterator() {
+        return new ArrayRingBufferIterator();
+    }
+
+    private class ArrayRingBufferIterator implements Iterator<T> {
+        private int pos;
+        public ArrayRingBufferIterator() {
+            pos = first;
+        }
+        public boolean hasNext(){
+            return rb[pos] != null;
+        }
+
+        public T next() {
+            if (hasNext()) {
+                T temp = rb[pos];
+                pos += 1;
+                if (pos == capacity()) {
+                    pos = 0;
+                }
+                return temp;
+            }
+            return null;
+        }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null){
+            return false;
+        }
+        if (other.getClass() != this.getClass()){
+            return false;
+        }
+        ArrayRingBuffer<T> o = (ArrayRingBuffer<T>) other;
+        if (fillCount != o.fillCount()) {
+            return false;
+        }
+        if (!this.toString().equals(other.toString())) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        List<String> listOfItems = new ArrayList<>();
+        for (T x : this) {
+            if (x == null) {
+                continue;
+            }
+            listOfItems.add(x.toString());
+        }
+        return String.join(", ", listOfItems);
+    }
+
+    public static void main(String[] args) {
+        ArrayRingBuffer<Integer> test = new ArrayRingBuffer<>(4);
+        test.enqueue(3);
+        test.enqueue(4);
+        ArrayRingBuffer<Integer> test2 = new ArrayRingBuffer<>(4);
+        test2.enqueue(3);
+        test2.enqueue(4);
+        test2.dequeue();
+        test2.dequeue();
+        test2.enqueue(3);
+        test2.enqueue(4);
+        String t1 = test.toString();
+        String t2 = test2.toString();
+    }
+
 }
-    // TODO: Remove all comments that say TODO when you're done.

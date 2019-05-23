@@ -117,6 +117,9 @@ public class Plip extends Creature {
      * for an example to follow.
      */
     public Action chooseAction(Map<Direction, Occupant> neighbors) {
+        if (energy == 0) {
+            return new Action(Action.ActionType.DIE);
+        }
         // Rule 1
         Deque<Direction> emptyNeighbors = new ArrayDeque<>();
         boolean anyClorus = false;

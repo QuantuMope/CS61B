@@ -1,4 +1,5 @@
-package creatures;
-
-public class Clorus {
-}
+//package creatures;
+//import huglife.Creature;
+//
+//public class Clorus extends Creature {
+//}

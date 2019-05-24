@@ -32,7 +32,7 @@ public class UnionFind {
         while (parent(index) >= 0) {
             index = parent(index);
         }
-        return Math.abs(index);
+        return Math.abs(parent(index));
     }
 
     /* Returns the parent of v1. If v1 is the root of a tree, returns the
@@ -55,12 +55,18 @@ public class UnionFind {
         // Validates inputs.
         validate(v1);
         validate(v2);
-        int root1 = parent(v1);
-        int root2 = parent(v2);
-        if (sizeOf(v1) <= sizeOf(v2) ) {
-            vertices.set(root2, root1);
-        } else {
-            vertices.set(root1, root2);
+        if (!connected(v1, v2)) {
+            int root1 = find(v1);
+            int root2 = find(v2);
+            int size1 = sizeOf(v1);
+            int size2 = sizeOf(v2);
+            if (size1 <= size2) {
+                vertices.set(root1, root2);
+                vertices.set(root2, -(size2+size1));
+            } else {
+                vertices.set(root2, root1);
+                vertices.set(root1, -(size1+size2));
+            }
         }
     }
 
@@ -68,15 +74,11 @@ public class UnionFind {
        allowing for fast search-time. */
     public int find(int vertex) {
         int index = vertex;
-        int root = -5;
+        if (parent(index) < 0) { return vertex; }
         while (parent(index) >= 0) {
-            root = index;
             index = parent(index);
         }
-        if (root == -5) {
-            return parent(vertex);
-        }
-        return root;
+        return index;
     }
 
 }

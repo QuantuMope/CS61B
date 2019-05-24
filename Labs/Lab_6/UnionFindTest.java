@@ -29,4 +29,20 @@ public class UnionFindTest {
         assertTrue(test.connected(2, 5));
         assertFalse(test.connected(4, 9));
     }
+
+    @Test
+    public void testPathCompression() {
+        UnionFind test = new UnionFind(22);
+        for (int i = 0; i < 10; i++) {
+            test.union(i, i+1);
+        }
+        test.union(18, 19);
+        test.union(18, 15);
+        test.union(15, 14);
+        int expectedParent1 = 1;
+        int expectedParent2 = 19;
+        assertEquals(expectedParent1, test.parent(7));
+        assertEquals(expectedParent1, test.parent(9));
+        assertEquals(expectedParent2, test.parent(15));
+    }
 }

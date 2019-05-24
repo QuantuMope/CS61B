@@ -74,11 +74,21 @@ public class UnionFind {
        allowing for fast search-time. */
     public int find(int vertex) {
         int index = vertex;
-        if (parent(index) < 0) { return vertex; }
+        int root = vertex;
+        int counter = 0;
+        if (parent(index) < 0) { return root; }
         while (parent(index) >= 0) {
+            root = index = parent(index);
+            counter++;
+        }
+        // Path-compression.
+        index = vertex;
+        for (int i = 0; i < counter; i++) {
+            vertices.set(index, root);
             index = parent(index);
         }
-        return index;
+        return root;
+
     }
 
 }

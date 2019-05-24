@@ -13,7 +13,19 @@ public class BubbleGrid {
      * are unique, valid locations in the grid. Must be non-destructive
      * and have no side-effects to grid. */
     public int[] popBubbles(int[][] darts) {
-        // TODO
+        int width = grid[0].length;
+        int height = grid.length;
+        int size = width*height;
+        UnionFind test = new UnionFind(size);
+        for (int[] row : grid) {
+            for (int point : row) {
+                if (point == 0) {
+                    assert true;
+                } else {
+                    // code
+                }
+            }
+        }
         return null;
     }
 }

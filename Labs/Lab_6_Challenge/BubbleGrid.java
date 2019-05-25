@@ -17,8 +17,10 @@ public class BubbleGrid {
         int height = grid.length;
         int size = width*height;
         UnionFind test = new UnionFind(size);
+        int counter = 0;
         for (int[] row : grid) {
             for (int point : row) {
+
                 if (point == 0) {
                     assert true;
                 } else {

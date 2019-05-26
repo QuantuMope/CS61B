@@ -5,21 +5,21 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
     private class Square {
         private boolean open = false;
-        private boolean full = false;
 
         public Square() {}
 
         public Square(String input) {
             if (input.equals("TOP")) {
                 open = true;
-                full = true;
             }
         }
     }
     private Square[][] grid;
     private WeightedQuickUnionUF quickUnion;
+    private WeightedQuickUnionUF percolationChecker;
     private int lengthWidth;
-    private Square top = new Square("TOP");
+    private int topIndex;
+    private int bottomIndex;
     private int openSpots;
 
     // Create N-by-N grid with all sites initially blocked.
@@ -28,9 +28,15 @@ public class Percolation {
         openSpots = 0;
         grid = new Square[N][N];
         lengthWidth = N;
+        topIndex = N*N;
+        bottomIndex = N*N +1;
+        // The +2 spots in the QuickUnion are for the top and bottom connector nodes.
         quickUnion = new WeightedQuickUnionUF(N*N + 2);
+        percolationChecker = new WeightedQuickUnionUF(N*N + 2);
         for (int column = 0; column < N; column++) {
-            quickUnion.union(N*N, column);
+            quickUnion.union(topIndex, column);
+            percolationChecker.union(topIndex, column);
+            percolationChecker.union(bottomIndex, calc(N-1, column));
         }
         for (int row = 0; row < N; row++) {
             for (int column = 0; column < N; column++) {
@@ -49,10 +55,30 @@ public class Percolation {
 
     // Helper method to check for open adjacent connections and connect them.
     private void connectOpens(int row, int col) {
-        if (grid[row][col+1].open && (col + 1) < lengthWidth) { quickUnion.union(calc(row, col), calc(row, col+1)); }
-        if (grid[row][col-1].open && (col - 1) < lengthWidth) { quickUnion.union(calc(row, col), calc(row, col-1)); }
-        if (grid[row+1][col].open && (row + 1) < lengthWidth) { quickUnion.union(calc(row, col), calc(row+1, col)); }
-        if (grid[row-1][col].open && (row - 1) < lengthWidth) { quickUnion.union(calc(row, col), calc(row-1, col)); }
+        if (col + 1 < lengthWidth) {
+            if (grid[row][col+1].open) {
+                quickUnion.union(calc(row, col), calc(row, col + 1));
+                percolationChecker.union(calc(row, col), calc(row, col + 1));
+            }
+        }
+        if (col - 1 > -1) {
+            if (grid[row][col-1].open) {
+                quickUnion.union(calc(row, col), calc(row, col - 1));
+                percolationChecker.union(calc(row, col), calc(row, col - 1));
+            }
+        }
+        if (row + 1 < lengthWidth) {
+            if (grid[row+1][col].open) {
+                quickUnion.union(calc(row, col), calc(row + 1, col));
+                percolationChecker.union(calc(row, col), calc(row + 1, col));
+            }
+        }
+        if (row - 1 > -1) {
+           if (grid[row-1][col].open) {
+               quickUnion.union(calc(row, col), calc(row-1, col));
+               percolationChecker.union(calc(row, col), calc(row-1, col));
+           }
+        }
     }
 
     // Open the site (row, col) if it is not open.
@@ -72,7 +98,7 @@ public class Percolation {
 
     // Is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        return grid[row][col].full;
+        return quickUnion.connected(calc(row, col), topIndex) && grid[row][col].open;
     }
 
     // Return number of open sites.
@@ -82,7 +108,7 @@ public class Percolation {
 
     // Does the system percolate?
     public boolean percolates() {
-        return false;
+        return percolationChecker.connected(topIndex, bottomIndex);
     }
 
     public static void main(String[] args) {

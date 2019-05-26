@@ -4,6 +4,24 @@ import org.junit.Test;
 /** Tests by Brendan Hu, Spring 2015, revised for 2016 by Josh Hug */
 public class TestBSTMap {
 
+    @Test
+    public void insertTest() {
+        BSTMap<String, Integer> test = new BSTMap<>("puzzles", 6);
+        test.put("creatures", 14);
+        assertEquals(2, test.size());
+        test.put("tutor", 14);
+        test.put("zoo", 14);
+        test.put("pizza", 14);
+        test.put("andrew", 1);
+        int testInt = test.get("pizza");
+        assertTrue(test.containsKey(("pizza")));
+        assertEquals(6, test.size());
+        assertEquals(14, (int) test.get("pizza"));
+        test.printInOrder();
+
+    }
+
+
 	@Test
     public void sanityGenericsTest() {
     	try {

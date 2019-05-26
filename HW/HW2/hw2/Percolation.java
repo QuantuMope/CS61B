@@ -31,6 +31,8 @@ public class Percolation {
         topIndex = N*N;
         bottomIndex = N*N +1;
         // The +2 spots in the QuickUnion are for the top and bottom connector nodes.
+        // Use a percolationChecker that mirrors QuickUnion with the addition of a
+        // bottom node connector to prevent backwash.
         quickUnion = new WeightedQuickUnionUF(N*N + 2);
         percolationChecker = new WeightedQuickUnionUF(N*N + 2);
         for (int column = 0; column < N; column++) {
@@ -112,7 +114,6 @@ public class Percolation {
     }
 
     public static void main(String[] args) {
-        Percolation example = new Percolation(3);
     }
 
 }

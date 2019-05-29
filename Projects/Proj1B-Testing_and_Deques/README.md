@@ -1,6 +1,8 @@
 # Deliverables
 
 - Deque.java
+- ArrayDeque.java
+- LinkedListDeque.java
 - Palindrome.java
 - OffByOne.java
 - OffByN.java

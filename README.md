@@ -1,6 +1,7 @@
 # CS61B Data Structures 
 
-Below is the course description/details. Completed the course assignments as a personal challenge and to learn more about data structures.
+Below is the course description/details. Completed the course assignments as a personal challenge and to learn more about data structures. The link below shows all project/hw/lab descriptions.
+https://sp19.datastructur.es/
 
 * * *
 

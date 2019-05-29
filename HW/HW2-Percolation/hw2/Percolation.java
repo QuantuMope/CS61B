@@ -2,6 +2,12 @@ package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
+/**
+ *
+ * @author Andrew Choi
+ * Date: 05/26/2019
+ */
+
 public class Percolation {
     private class Square {
         private boolean open = false;

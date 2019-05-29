@@ -3,6 +3,12 @@ package hw2;
 import edu.princeton.cs.introcs.StdRandom;
 import edu.princeton.cs.introcs.StdStats;
 
+/**
+ *
+ * @author Andrew Choi
+ * Date: 05/26/2019
+ */
+
 public class PercolationStats {
 
     private double[] trials;

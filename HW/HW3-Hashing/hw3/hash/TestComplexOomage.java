@@ -20,7 +20,7 @@ public class TestComplexOomage {
     /* This should pass if your OomageTestUtility.haveNiceHashCodeSpread
        is correct. This is true even though our given ComplexOomage class
        has a flawed hashCode. */
-    /*@Test
+    @Test
     public void testRandomOomagesHashCodeSpread() {
         List<Oomage> oomages = new ArrayList<>();
         int N = 10000;
@@ -30,20 +30,36 @@ public class TestComplexOomage {
         }
 
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(oomages, 10));
-    }*/
+    }
 
     /* TODO: Create a list of Complex Oomages called deadlyList
      * that shows the flaw in the hashCode function.
      */
-    /*
+
+    /* Note - When ComplexOomage's hashCode used 256 as a multiplier, numerous collisions
+       happened due to a constant remainder of 256 when lists differed by only 1 int value.
+       Thus, a prime number should always be used such as 259.
+     */
+
     @Test
     public void testWithDeadlyParams() {
         List<Oomage> deadlyList = new ArrayList<>();
-
-        // Your code here.
-
+        List<Integer> input = new ArrayList<>();
+        input.add(1);
+        input.add(2);
+        input.add(3);
+        input.add(4);
+        input.add(5);
+        for (int i = 0; i < 20; i += 1) {
+            input.add(5, i);
+            for (int j = 0; j < 20; j += 1) {
+                input.add(6, j);
+                deadlyList.add(new ComplexOomage(input));
+            }
+        }
+        HashTableVisualizer.visualize(deadlyList, 10, 1.0);
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(deadlyList, 10));
-    } */
+    }
 
     /** Calls tests for SimpleOomage. */
     public static void main(String[] args) {

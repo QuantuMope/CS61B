@@ -1,14 +1,12 @@
 # CS61B Data Structures 
 
-Below is the course description/details. Completed the course assignments as a personal challenge and to learn more about data structures. The link below shows all project/hw/lab descriptions.
+Below is the course description/details. Completed the course assignments as a personal challenge and to learn more about data structures. The link below shows all project/hw/lab descriptions. <br />
 https://sp19.datastructur.es/
 
 * * *
 
 @ UCB, Spring 2019  
 @ Instructor: [Josh Hug](https://www2.eecs.berkeley.edu/Faculty/Homepages/joshhug.html)   
-@ [Course Website](https://sp18.datastructur.es/index.html)  
-@ [Java Visualizer](https://cscircles.cemc.uwaterloo.ca/java_visualize/)
 
 * * *
 
@@ -28,12 +26,6 @@ There are 14 weeks of lab in the course, as well as 5 required homeworks. In add
 During Phase I of the course (Weeks 1 through 4), labs will provide you with help getting your computer set up and how to use essential Java programming tools. During Phase II of the course (Weeks 5 through 7), labs will provide you with structure for the open ended design project (project 2). In Phase III of the course, labs will give you a chance to implement important data structures and algorithms. All labs will take approximately two hours to complete, though some may run slightly longer. HWs will vary from 3 to 10 hours of work. You will turn in everything electronically using GitHub, and your results will be available on Gradescope. All homeworks and labs are individual efforts (without partners). Two of the homeworks and one of the labs will be released during RRR week. If you complete all of your work during the semester, you don't need to do these (as they will be dropped). For the three labs with no official work to turn in (labs 6, 7, and 12, subject to change), everybody gets full credit automatically, even if they do not attend lab that week.
 </p>
 
-**No extensions or grace hours will be granted for labs or homework.** Only your 12 (of 15) best lab scores and 5 (of 7) best homework scores count towards your final score.
-
-<p align="justify">
-Homework will be graded on a rigorous suite of correctness tests while labs will receive full credit for "reasonable effort,” as evaluated by a small number of relatively simple correctness tests. Passing all tests on Gradescope for homework or labs will ensure full credit as there are no hidden tests. Each lab will be worth 8 points (for a total of 96 points), and each homework will be worth 32 points (for a total of 160 points).
-</p>
-
 ## Programming Projects
 <p align="justify">
 In addition to the HWs and labs, there will be 4 programming projects. In these projects you will build an entire system. For project 0, you will be able to work with a partner. For project 2 you will be required to work with a partner, unless you specifically request otherwise (details TBA).
@@ -48,12 +40,6 @@ Each project has a specific theme:
 - Project 2: Large Scale Design and Testing
 - Project 3: Working with an Existing Code Base
 
-<p align="justify">
-For all projects, we will ultimately release all tests that determine your grade. In other words, passing all tests on Gradescope will allow you to earn full points for the autograded portion of the project.
-<br>
-Projects 0, 1, 2, and 3 will be worth 50, 80, 200, and 150 points respectively. For projects 2 and 3, there are opportunities for "gold points" described in each project specification.
-</p>
-
 ## References
 * [Gitbook CS 61B - Josh Hug](https://joshhug.gitbooks.io/hug61b/content/)
 * [Head First Java - 2nd edition (pdf)](https://github.com/Zhenye-Na/cs61b-ucb/blob/master/docs/head-first-java-2nd-edition.pdf)
@@ -61,5 +47,3 @@ Projects 0, 1, 2, and 3 will be worth 50, 80, 200, and 150 points respectively. 
 * [Open Data Structures (in Java)](http://opendatastructures.org/ods-java/ods-java-html.html)
 * [GeeksforGeeks - Data Structures](https://www.geeksforgeeks.org/data-structures/)
 * [Data Structures Into Java](http://www-inst.eecs.berkeley.edu/~cs61b/fa14/book2/data-structures.pdf)
-
-All the references have been archived and can be found [here](https://github.com/Zhenye-Na/cs61b-ucb/tree/master/docs).

@@ -1,16 +1,64 @@
 import java.util.Iterator;
 import java.util.Set;
+import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class MyHashMap<K, V> implements Map61B<K, V>{
 
+    private int maxSize;
+    private double loadFactor;
+    private int size;
+    private ArrayList<LinkedList<Entry<K, V>>> HashMap;
+    private HashSet<K> keys = new HashSet<>();
+
+    private class Entry<K, V> {
+        private K key;
+        private V value;
+
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+
+    public MyHashMap() {
+        this.maxSize = 16;
+        this.loadFactor = 0.75;
+        this.size = 0;
+        this.HashMap = new ArrayList<>(this.maxSize);
+    }
+
+    public MyHashMap(int initialSize) {
+        this.maxSize = initialSize;
+        this.loadFactor = 0.75;
+        this.size = 0;
+        this.HashMap = new ArrayList<>(this.maxSize);
+    }
+
+    public MyHashMap(int initialSize, double loadFactor) {
+        this.maxSize = initialSize;
+        this.loadFactor = loadFactor;
+        this.size = 0;
+        this.HashMap = new ArrayList<>(this.maxSize);
+    }
+
+    private int hash(K key) {
+        return (key.hashCode() & 0x7FFFFFFF) % maxSize;
+    }
+
     /** Removes all of the mappings from this map. */
     public void clear() {
-
+        this.maxSize = 16;
+        this.loadFactor = 0.75;
+        this.HashMap = new ArrayList<>(this.maxSize);
     }
 
     /** Returns true if this map contains a mapping for the specified key. */
     public boolean containsKey(K key) {
-        return false;
+        return (this.HashMap.get(hash(key)) != null);
     }
 
     /**
@@ -23,7 +71,17 @@ public class MyHashMap<K, V> implements Map61B<K, V>{
 
     /** Returns the number of key-value mappings in this map. */
     public int size() {
-        return 2;
+        return size;
+    }
+
+    private void resize() {
+        if ((double) size() / maxSize >= loadFactor) {
+            //this.maxSize *= 2;
+            ArrayList<Entry<K, V>> temp = new ArrayList<>(this.maxSize *=2);
+            for (K key : keys) {
+                temp.add(hash(key), )
+            }
+        }
     }
 
     /**
@@ -32,12 +90,20 @@ public class MyHashMap<K, V> implements Map61B<K, V>{
      * the old value is replaced.
      */
     public void put(K key, V value) {
+        if (!containsKey(key)) {
+            this.HashMap.add(hash(key), new LinkedList<>());
+            this.HashMap.get(hash(key)).add(new Entry<>(key, value));
+            size += 1;
+        } else {
 
+            this.HashMap.set(hash(key), new Entry<>(key, value));
+        }
+        this.keys.add(key);
     }
 
     /** Returns a Set view of the keys contained in this map. */
     public Set<K> keySet(){
-        return null;
+        return keys;
     }
 
     /**
@@ -46,7 +112,7 @@ public class MyHashMap<K, V> implements Map61B<K, V>{
      * UnsupportedOperationException.
      */
     public V remove(K key){
-        return null;
+        throw new UnsupportedOperationException("Remove is non supported in this class.");
     }
 
     /**
@@ -60,6 +126,6 @@ public class MyHashMap<K, V> implements Map61B<K, V>{
 
     @Override
     public Iterator<K> iterator() {
-        return null;
+        return keys.iterator();
     }
 }

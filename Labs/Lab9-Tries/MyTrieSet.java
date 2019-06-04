@@ -2,6 +2,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
+/**
+ * A Trie data structure that utilizes a hash map as its mapping structure.
+ * @author Andrew Choi
+ * Date: 06/03/2019
+ */
+
+
 public class MyTrieSet implements TrieSet61B {
 
     private Node root = new Node(false);

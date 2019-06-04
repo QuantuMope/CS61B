@@ -31,7 +31,8 @@ public class ArrayHeapMinPQTest {
 
     @Test
     public void changePriorityTest() {
-        ArrayHeapMinPQ<String> test = new ArrayHeapMinPQ<>();
+        //ArrayHeapMinPQ<String> test = new ArrayHeapMinPQ<>();
+        NaiveMinPQ<String> test = new NaiveMinPQ<>();
         test.add("first",1);
         test.add("second",2);
         test.add("third",3);
@@ -49,32 +50,46 @@ public class ArrayHeapMinPQTest {
     @Test
     public void timerTest() {
         NaiveMinPQ<Integer> naive = new NaiveMinPQ<>();
-        ArrayHeapMinPQ<Integer> proper = new ArrayHeapMinPQ<>();
+        ArrayHeapMinPQ<Integer> heap = new ArrayHeapMinPQ<>();
 
         Stopwatch sw1 = new Stopwatch();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 25000; i++) {
             naive.add(i, i);
         }
-        for (int i = 0; i < 10000; i+=2) {
+        System.out.println("Naive add: " + sw1.elapsedTime() +  " seconds.");
+        for (int i = 0; i < 25000; i+=2) {
             naive.changePriority(i, i*10);
         }
-//        for (int i = 0; i < 10000; i++) {
-//            naive.removeSmallest();
-//        }
-        System.out.println("Total time elapsed: " + sw1.elapsedTime() +  " seconds.");
+        System.out.println("Naive changePriority: " + sw1.elapsedTime() +  " seconds.");
+        for (int i = 0; i < 25000; i+=2) {
+            naive.contains(i);
+        }
+        System.out.println("Naive contains: " + sw1.elapsedTime() +  " seconds.");
+        for (int i = 0; i < 25000; i++) {
+            naive.getSmallest();
+            naive.removeSmallest();
+        }
+        System.out.println("Naive getSmallest + removeSmallest: " + sw1.elapsedTime() +  " seconds.");
+        System.out.println("Naive total time elapsed: " + sw1.elapsedTime() +  " seconds.");
 
         Stopwatch sw2 = new Stopwatch();
-        for (int i = 0; i < 10000; i++) {
-            proper.add(i, i);
+        for (int i = 0; i < 25000; i++) {
+            heap.add(i, i);
         }
-        for (int i = 0; i < 10000; i+=2) {
-            proper.changePriority(i, i*10);
+        System.out.println("Heap add: " + sw2.elapsedTime() +  " seconds.");
+        for (int i = 0; i < 25000; i+=2) {
+            heap.changePriority(i, i*10);
         }
-//        for (int i = 0; i < 10000; i++) {
-//            proper.removeSmallest();
-//        }
-        System.out.println("Total time elapsed: " + sw2.elapsedTime() +  " seconds.");
+        System.out.println("Heap changePriority: " + sw2.elapsedTime() +  " seconds.");
+        for (int i = 0; i < 25000; i+=2) {
+            heap.contains(i);
+        }
+        System.out.println("Heap contains: " + sw2.elapsedTime() +  " seconds.");
+        for (int i = 0; i < 25000; i++) {
+            heap.getSmallest();
+            heap.removeSmallest();
+        }
+        System.out.println("Heap getSmallest + removeSmallest: " + sw2.elapsedTime() +  " seconds.");
+        System.out.println("Heap total time elapsed: " + sw2.elapsedTime() +  " seconds.");
     }
-
-
 }

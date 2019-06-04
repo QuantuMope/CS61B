@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.HashSet;
 
 /**
- *
+ * A Min Priority Queue that uses an ArrayList data structure resembling a binary tree.
  * @author Andrew Choi
  * Date: 06/02/2019
  */
@@ -19,12 +19,45 @@ public class ArrayHeapMinPQ<T extends Comparable<T>> implements ExtrinsicMinPQ<T
     private int index;
     private HashSet<T> keys;
 
-    private class Entry<T> {
+    private class Entry<T> implements Comparable<Entry>{
         private T item;
         private double priority;
         private Entry(T item, double priority) {
             this.item = item;
             this.priority = priority;
+        }
+        T getItem() {
+            return item;
+        }
+
+        private double getPriority() {
+            return priority;
+        }
+
+        private void setPriority(double priority) {
+            this.priority = priority;
+        }
+
+        @Override
+        public int compareTo(Entry other) {
+            if (other == null) {
+                return -1;
+            }
+            return Double.compare(this.getPriority(), other.getPriority());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || o.getClass() != this.getClass()) {
+                return false;
+            } else {
+                return ((Entry) o).getItem().equals(getItem());
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return item.hashCode();
         }
     }
 
@@ -53,7 +86,7 @@ public class ArrayHeapMinPQ<T extends Comparable<T>> implements ExtrinsicMinPQ<T
      * it has a lower value until it reaches an appropriate spot. */
     private void swim(int k) {
         if (k == 1) { return; }
-        if (heap.get(parent(k)).priority > (heap.get(k).priority)) {
+        if (heap.get(parent(k)).getPriority() > (heap.get(k).getPriority())) {
             swap(k);
             swim(parent(k));
         }
@@ -69,16 +102,18 @@ public class ArrayHeapMinPQ<T extends Comparable<T>> implements ExtrinsicMinPQ<T
     /* Helper method that swaps an Entry with its smaller child
      * until it reaches an appropriate spot. */
     private void sink(int k) {
-        if (k*2 > size || (k*2+1 > size && heap.get(k*2).priority > heap.get(k).priority)) {
+        if (k*2 > size() || (k*2+1 > size() && heap.get(k*2).getPriority() > heap.get(k).getPriority())) {
             return;
-        } else if (k*2+1 > size && heap.get(k*2).priority < heap.get(k).priority) {
+        } else if (k*2+1 > size() && heap.get(k*2).getPriority() < heap.get(k).getPriority()) {
             swap(k*2);
             return;
         }
-        if (heap.get(k*2).priority < heap.get(k*2+1).priority && heap.get(k*2).priority < heap.get(k).priority) {
+        if (heap.get(k*2).getPriority() < heap.get(k*2+1).getPriority() &&
+            heap.get(k*2).getPriority() < heap.get(k).getPriority()) {
             swap(k*2);
             sink(k*2);
-        } else if (heap.get(k*2).priority > heap.get(k*2+1).priority && heap.get(k*2+1).priority < heap.get(k).priority) {
+        } else if (heap.get(k*2).getPriority() > heap.get(k*2+1).getPriority() &&
+                   heap.get(k*2+1).priority < heap.get(k).getPriority()) {
             swap(k*2+1);
             sink(k*2+1);
         }
@@ -93,14 +128,14 @@ public class ArrayHeapMinPQ<T extends Comparable<T>> implements ExtrinsicMinPQ<T
     /* Returns the minimum item. Throws NoSuchElementException if the PQ is empty. */
     public T getSmallest(){
         if (size == 0) { throw new NoSuchElementException(); }
-        return heap.get(1).item;
+        return heap.get(1).getItem();
     }
 
     /* Removes and returns the minimum item. Throws NoSuchElementException if the PQ is empty. */
     public T removeSmallest() {
         index -= 1;
         size -= 1;
-        T temp = heap.get(1).item;
+        T temp = heap.get(1).getItem();
         keys.remove(temp);
         heap.set(1, null);
         heap.set(1, heap.get(index));
@@ -112,25 +147,17 @@ public class ArrayHeapMinPQ<T extends Comparable<T>> implements ExtrinsicMinPQ<T
     /* Returns the number of items in the PQ. */
     public int size() { return size; }
 
+    private int indOf(T elem) {
+        return heap.indexOf(new Entry(elem, 0));
+    }
+
     /* Changes the priority of the given item. Throws NoSuchElementException if the item
      * doesn't exist. */
     public void changePriority(T item, double priority) {
         if (!contains(item)) { throw new NoSuchElementException(); }
-        heap.get(heap.indexOf(item))
-
-
-        int location = find(item);
-        heap.get(location).priority = priority;
+        int location = indOf(item);
+        heap.get(location).setPriority(priority);
         swim(location);
         sink(location);
-    }
-
-    private int find(T item) {
-        for (int i = 1; i <= size; i++) {
-            if (heap.get(i).item.equals(item)) {
-                return i;
-            }
-        }
-        return 0;
     }
 }

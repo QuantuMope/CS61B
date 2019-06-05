@@ -2,6 +2,7 @@
 
 - ArrayHeapMinPQ.java
 - ArrayHeapMinPQTest.java
+- NaivePointSet.java
 - KDTree.java
 - KDTreeTest.kava
 

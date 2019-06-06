@@ -16,7 +16,6 @@ public class KDTree implements PointSet {
     private Node root = null;
     private Comparator<Point> XxCC = new XxComparator();
     private Comparator<Point> YyCC = new YyComparator();
-    private int comparatorChooserIndex = 0;
 
     /** Creates a KDTree with all the points of the List inserted properly. */
     public KDTree(List<Point> points) {
@@ -62,12 +61,12 @@ public class KDTree implements PointSet {
             root = new Node(input);
             return;
         }
-        insertHelper(input, root, comparatorChooser());
+        insertHelper(input, root, XxCC);
     }
 
     /** Helper method to switch between using the XxComparator and YyComparator. */
-    private Comparator<Point> comparatorChooser() {
-        if (comparatorChooserIndex == 0) { return XxCC; }
+    private Comparator<Point> comparatorChooser(Comparator cc) {
+        if (cc.equals(YyCC)) { return XxCC; }
         return YyCC;
     }
 
@@ -75,15 +74,12 @@ public class KDTree implements PointSet {
     private Node insertHelper(Point input, Node curr, Comparator<Point> cc) {
         if (curr == null) {
             size += 1;
-            comparatorChooserIndex = 0;
             return new Node(input);
         }
         if (cc.compare(curr.getPoint(), input) > 0) {
-            comparatorChooserIndex ^= 1;
-            curr.left = insertHelper(input, curr.left, comparatorChooser());
+            curr.left = insertHelper(input, curr.left, comparatorChooser(cc));
         } else if (cc.compare(curr.getPoint(), input) <= 0) {
-            comparatorChooserIndex ^= 1;
-            curr.right = insertHelper(input, curr.right, comparatorChooser());
+            curr.right = insertHelper(input, curr.right, comparatorChooser(cc));
         }
         return curr;
     }
@@ -94,9 +90,7 @@ public class KDTree implements PointSet {
         Point inputPoint = new Point(x, y);
         Point bestPoint = root.getPoint();
         double best = Point.distance(bestPoint, inputPoint);
-        comparatorChooserIndex = 0;
-        Comparator<Point> levelComparator = XxCC;
-        return nearestHelper(inputPoint, root.getPoint(), root, best, levelComparator);
+        return nearestHelper(inputPoint, root.getPoint(), root, best, XxCC);
     }
 
     /** Nearest helper method.
@@ -104,40 +98,33 @@ public class KDTree implements PointSet {
      *  Prunes unnecessary grids and checks ones where the closest lateral
      *  distance is less than the current best distance. */
     private Point nearestHelper(Point input, Point bestPoint, Node curr, double best, Comparator<Point> cc) {
+        double pruneDist;
+        Node goodSide = curr;
+        Node badSide = curr;
+
         if (curr == null) {
             return bestPoint;
         }
+        if (Point.distance(curr.getPoint(), input) < best) {
+            best = Point.distance(curr.getPoint(), input);
+            bestPoint = curr.getPoint();
+        }
 
-        Comparator<Point> levelComparator;
-        double pruneDist;
         if (cc.equals(XxCC)) { pruneDist = Math.pow(curr.getX() - input.getX(), 2); }
         else { pruneDist = Math.pow(curr.getY() - input.getY(), 2); }
 
         if (cc.compare(curr.getPoint(), input) > 0) {
-            if (Point.distance(curr.getPoint(), input) < best) {
-                best = Point.distance(curr.getPoint(), input);
-                bestPoint = curr.getPoint();
-            }
-            comparatorChooserIndex ^= 1;
-            levelComparator = comparatorChooser();
-            bestPoint = nearestHelper(input, bestPoint, curr.left, best, levelComparator);
-
-            if (pruneDist < Point.distance(bestPoint, input)) {
-                bestPoint = nearestHelper(input, bestPoint, curr.right, Point.distance(bestPoint, input), levelComparator);
-            }
+            goodSide = curr.left;
+            badSide = curr.right;
         } else if (cc.compare(curr.getPoint(), input) <= 0) {
+            goodSide = curr.right;
+            badSide = curr.left;
+        }
 
-            if (Point.distance(curr.getPoint(), input) < best) {
-                best = Point.distance(curr.getPoint(), input);
-                bestPoint = curr.getPoint();
-            }
-            comparatorChooserIndex ^= 1;
-            levelComparator = comparatorChooser();
-            bestPoint = nearestHelper(input, bestPoint, curr.right, best, levelComparator);
+        bestPoint = nearestHelper(input, bestPoint, goodSide, best, comparatorChooser(cc));
 
-            if (pruneDist < Point.distance(bestPoint, input)) {
-                bestPoint = nearestHelper(input, bestPoint, curr.left, Point.distance(bestPoint, input), levelComparator);
-            }
+        if (pruneDist < Point.distance(bestPoint, input)) {
+            bestPoint = nearestHelper(input, bestPoint, badSide, Point.distance(bestPoint, input), comparatorChooser(cc));
         }
         return bestPoint;
     }

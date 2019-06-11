@@ -2,9 +2,11 @@ package bearmaps.hw4;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import bearmaps.proj2ab.ArrayHeapMinPQ;
+import bearmaps.proj2ab.DoubleMapPQ;
 import edu.princeton.cs.algs4.Stopwatch;
 
 /**
@@ -19,8 +21,9 @@ public class AStarSolver<Vertex extends Comparable<Vertex>> implements ShortestP
     private double solutionWeight;
     private List<Vertex> solution;
     private double timeSpent;
-    private ArrayHeapMinPQ<Vertex> PQ;
+    private DoubleMapPQ<Vertex> PQ;
     private HashMap<Vertex, Double> distances;
+    private HashSet<Vertex> dequeuedList;
     private int dequeues;
 
     /** Constructor which finds the solution, computing everything necessary
@@ -28,11 +31,12 @@ public class AStarSolver<Vertex extends Comparable<Vertex>> implements ShortestP
      *  Note that timeout passed in is in seconds. */
     public AStarSolver(AStarGraph<Vertex> input, Vertex start, Vertex end, double timeout) {
         Stopwatch sw = new Stopwatch();
-        PQ = new ArrayHeapMinPQ<>();
+        PQ = new DoubleMapPQ<>();
         distances = new HashMap<>();
         solution = new ArrayList<>();
+        dequeuedList = new HashSet<>();
         dequeues = 0;
-        PQ.add(start, 0.0 + input.estimatedDistanceToGoal(start, end));
+        PQ.add(start, 0.0);
         distances.put(start, 0.0);
         boolean finished = false;
         Vertex pop = PQ.getSmallest();
@@ -59,6 +63,7 @@ public class AStarSolver<Vertex extends Comparable<Vertex>> implements ShortestP
             } else {
                 // Take the next best vertex from fringe.
                 pop = PQ.removeSmallest();
+                dequeuedList.add(pop);
                 dequeues++;
                 solution.add(pop);
                 solutionWeight = distances.get(pop);
@@ -77,6 +82,7 @@ public class AStarSolver<Vertex extends Comparable<Vertex>> implements ShortestP
             // add new vertexes to fringe or possibly change a vertex's priority.
             List<WeightedEdge<Vertex>> neighborEdges = input.neighbors(pop);
             for (WeightedEdge<Vertex> e : neighborEdges) {
+                if (dequeuedList.contains(e.to())) { continue; }
 
                 Vertex p = e.from(), q = e.to();
                 double w = e.weight();
@@ -100,10 +106,10 @@ public class AStarSolver<Vertex extends Comparable<Vertex>> implements ShortestP
                 }
 
                 // Edge relax algorithm.
-                if (distances.get(p) + w < distances.get(q)) {
+                else if (distances.get(p) + w < distances.get(q)) {
                     distances.put(q, distToQ);
                     if (distances.containsKey(q)) {
-                        PQ.changePriority(q, distToQ + qPlusH);
+                        PQ.changePriority(q, qPlusH);
                     } else {
                         PQ.add(q, qPlusH);
                     }

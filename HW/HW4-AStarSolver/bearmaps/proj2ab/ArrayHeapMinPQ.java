@@ -154,7 +154,7 @@ public class ArrayHeapMinPQ<T extends Comparable<T>> implements ExtrinsicMinPQ<T
     /* Changes the priority of the given item. Throws NoSuchElementException if the item
      * doesn't exist. */
     public void changePriority(T item, double priority) {
-        if (!contains(item)) { throw new NoSuchElementException(); }
+        if (!contains(item)) { throw new NoSuchElementException(item + " doesn't exist in PQ."); }
         int location = indOf(item);
         heap.get(location).setPriority(priority);
         swim(location);

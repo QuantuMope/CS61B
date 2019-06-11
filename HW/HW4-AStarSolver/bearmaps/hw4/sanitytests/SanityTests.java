@@ -47,6 +47,7 @@ public class SanityTests {
         SolverOutcome actualOutcome = solver.outcome();
         SolverOutcome expectedOutcome = SolverOutcome.SOLVED;
         assertEquals(expectedOutcome, actualOutcome);
+        assertEquals(10.0, solver.solutionWeight());
     }
 
     @Test

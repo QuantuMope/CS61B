@@ -64,7 +64,6 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
                 dequeuedList.add(pop);
                 dequeues++;
                 solutionWeight = distances.get(pop);
-                System.out.println(dequeues);
 
                 // Monitoring timeout scenario.
             if (sw.elapsedTime() > timeout) {
@@ -97,8 +96,8 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
                         solution.add(q);
                         solution.add(p);
                         Vertex path = p;
-                        while (!solution.contains(start)) {
 
+                        while (!solution.contains(start)) {
                             solution.add(origins.get(path));
                             path = origins.get(path);
                         }

@@ -1,4 +1,4 @@
-package bearmaps;
+package bearmaps.proj2ab;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -12,7 +12,7 @@ import java.util.HashSet;
  * Date: 06/02/2019
  */
 
-public class ArrayHeapMinPQ<T extends Comparable<T>> implements ExtrinsicMinPQ<T> {
+public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     private int size;
     private ArrayList<Entry<T>> heap;
@@ -102,18 +102,21 @@ public class ArrayHeapMinPQ<T extends Comparable<T>> implements ExtrinsicMinPQ<T
     /* Helper method that swaps an Entry with its smaller child
      * until it reaches an appropriate spot. */
     private void sink(int k) {
-        if (k*2 > size() || (k*2+1 > size() && heap.get(k*2).getPriority() > heap.get(k).getPriority())) {
+
+        if (k*2 > size() || (k*2+1 > size() && heap.get(k*2).getPriority() >= heap.get(k).getPriority())) {
             return;
         } else if (k*2+1 > size() && heap.get(k*2).getPriority() < heap.get(k).getPriority()) {
             swap(k*2);
             return;
         }
-        if (heap.get(k*2).getPriority() < heap.get(k*2+1).getPriority() &&
-            heap.get(k*2).getPriority() < heap.get(k).getPriority()) {
+        double parentPriority = heap.get(k).getPriority();
+        double leftChildPriority = heap.get(k*2).getPriority();
+        double rightChildPriority = heap.get(k*2+1).getPriority();
+
+        if (leftChildPriority <= rightChildPriority && leftChildPriority < parentPriority) {
             swap(k*2);
             sink(k*2);
-        } else if (heap.get(k*2).getPriority() > heap.get(k*2+1).getPriority() &&
-                   heap.get(k*2+1).priority < heap.get(k).getPriority()) {
+        } else if (leftChildPriority > rightChildPriority && rightChildPriority < parentPriority) {
             swap(k*2+1);
             sink(k*2+1);
         }
@@ -154,7 +157,7 @@ public class ArrayHeapMinPQ<T extends Comparable<T>> implements ExtrinsicMinPQ<T
     /* Changes the priority of the given item. Throws NoSuchElementException if the item
      * doesn't exist. */
     public void changePriority(T item, double priority) {
-        if (!contains(item)) { throw new NoSuchElementException(); }
+        if (!contains(item)) { throw new NoSuchElementException(item + " doesn't exist in PQ."); }
         int location = indOf(item);
         heap.get(location).setPriority(priority);
         swim(location);

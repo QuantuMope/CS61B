@@ -102,18 +102,21 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     /* Helper method that swaps an Entry with its smaller child
      * until it reaches an appropriate spot. */
     private void sink(int k) {
+
         if (k*2 > size() || (k*2+1 > size() && heap.get(k*2).getPriority() >= heap.get(k).getPriority())) {
             return;
         } else if (k*2+1 > size() && heap.get(k*2).getPriority() < heap.get(k).getPriority()) {
             swap(k*2);
             return;
         }
-        if (heap.get(k*2).getPriority() <= heap.get(k*2+1).getPriority() &&
-            heap.get(k*2).getPriority() < heap.get(k).getPriority()) {
+        double parentPriority = heap.get(k).getPriority();
+        double leftChildPriority = heap.get(k*2).getPriority();
+        double rightChildPriority = heap.get(k*2+1).getPriority();
+
+        if (leftChildPriority <= rightChildPriority && leftChildPriority < parentPriority) {
             swap(k*2);
             sink(k*2);
-        } else if (heap.get(k*2).getPriority() > heap.get(k*2+1).getPriority() &&
-                   heap.get(k*2+1).priority < heap.get(k).getPriority()) {
+        } else if (leftChildPriority > rightChildPriority && rightChildPriority < parentPriority) {
             swap(k*2+1);
             sink(k*2+1);
         }

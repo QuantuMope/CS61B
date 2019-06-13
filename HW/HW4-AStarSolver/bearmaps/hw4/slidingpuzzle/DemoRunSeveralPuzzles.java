@@ -33,7 +33,7 @@ public class DemoRunSeveralPuzzles {
 
             BoardGraph spg = new BoardGraph();
             System.out.println(puzzleFiles[i] + ":");
-            ShortestPathsSolver<Board> solver = new AStarSolver<>(spg, start, goal, 1500);
+            ShortestPathsSolver<Board> solver = new AStarSolver<>(spg, start, goal, 3000);
             SolutionPrinter.summarizeOutcome(solver);
         }
 

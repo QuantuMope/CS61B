@@ -64,6 +64,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
                 dequeuedList.add(pop);
                 dequeues++;
                 solutionWeight = distances.get(pop);
+            }
 
                 // Monitoring timeout scenario.
             if (sw.elapsedTime() > timeout) {
@@ -73,58 +74,58 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
                 timeSpent = sw.elapsedTime();
             }
 
-                // Iterate through neighbors and record distances, and either
-                // add new vertexes to fringe or possibly change a vertex's priority.
-                List<WeightedEdge<Vertex>> neighborEdges = input.neighbors(pop);
-                for (WeightedEdge<Vertex> e : neighborEdges) {
-                    if (dequeuedList.contains(e.to())) { continue; }
+            // Iterate through neighbors and record distances, and either
+            // add new vertexes to fringe or possibly change a vertex's priority.
+            List<WeightedEdge<Vertex>> neighborEdges = input.neighbors(pop);
+            for (WeightedEdge<Vertex> e : neighborEdges) {
+                if (dequeuedList.contains(e.to())) { continue; }
 
-                    Vertex p = e.from(), q = e.to();
-                    double w = e.weight();
-                    double distToP = distances.get(p);
-                    double distToQ = distToP + w;
-                    double qPlusH = distToQ + input.estimatedDistanceToGoal(q, end);
+                Vertex p = e.from(), q = e.to();
+                double w = e.weight();
+                double distToP = distances.get(p);
+                double distToQ = distToP + w;
+                double qPlusH = distToQ + input.estimatedDistanceToGoal(q, end);
 
-                    // If the goal vertex is reached, problem is solved.
-                    if (q.equals(end)) {
-                        solutionWeight += e.weight();
-                        outcome = SolverOutcome.SOLVED;
-                        timeSpent = sw.elapsedTime();
+                // If the goal vertex is reached, problem is solved.
+                if (q.equals(end)) {
+                    solutionWeight += e.weight();
+                    outcome = SolverOutcome.SOLVED;
+                    timeSpent = sw.elapsedTime();
 
-                        // Create the solutions list by iterating through the path
-                        // in reverse order using the origins HashMap.
-                        solution.add(q);
-                        solution.add(p);
-                        Vertex path = p;
+                    // Create the solutions list by iterating through the path
+                    // in reverse order using the origins HashMap.
+                    solution.add(q);
+                    solution.add(p);
+                    Vertex path = p;
 
-                        while (!solution.contains(start)) {
-                            solution.add(origins.get(path));
-                            path = origins.get(path);
-                        }
-                        Collections.reverse(solution);
+                    while (!solution.contains(start)) {
+                        solution.add(origins.get(path));
+                        path = origins.get(path);
                     }
+                    Collections.reverse(solution);
+                }
 
-                    // If explored vertex is new, add to PQ.
-                    if (!distances.containsKey(q)) {
+                // If explored vertex is new, add to PQ.
+                if (!distances.containsKey(q)) {
+                    PQ.add(q, qPlusH);
+                    distances.put(q, distToQ);
+                    origins.put(q, p);
+                }
+
+                // Edge relax algorithm.
+                else if (distances.get(p) + w < distances.get(q)) {
+                    distances.put(q, distToQ);
+                    origins.put(q, p);
+                    if (PQ.contains(q)) {
+                        PQ.changePriority(q, qPlusH);
+                    } else {
                         PQ.add(q, qPlusH);
-                        distances.put(q, distToQ);
-                        origins.put(q, p);
-                    }
-
-                    // Edge relax algorithm.
-                    else if (distances.get(p) + w < distances.get(q)) {
-                        distances.put(q, distToQ);
-                        origins.put(q, p);
-                        if (PQ.contains(q)) {
-                            PQ.changePriority(q, qPlusH);
-                        } else {
-                            PQ.add(q, qPlusH);
-                        }
                     }
                 }
             }
         }
     }
+
 
     /** Returns one of SolverOutcome.SOLVED, SolverOutcome.TIMEOUT, or SolverOutcome.UNSOLVABLE.
      *  Should be SOLVED if the AStarSolver was able to complete all work in the time given.

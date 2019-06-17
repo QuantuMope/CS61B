@@ -99,18 +99,7 @@ public class MergeSort {
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
         Queue<Queue<Item>> output = makeSingleItemQueues(items);
-        //int size = singleItemQueues.size();
-        //boolean odd = false;
-        //if (singleItemQueues.size() % 2 == 1) { size++; odd = true; }
 
-//        for (; size != 0; size /= 2) {
-//            for (double operations = (double) size/2; operations > 0; operations--){
-//                if (odd) { odd = false; output.enqueue(output.dequeue()); continue; }
-//                if (output.size() == 1) { break; }
-//                output.enqueue(mergeSortedQueues(output.dequeue(), output.dequeue()));
-//            }
-//            if (output.size() == 1) { break; }
-//        }
         while(output.size() != 1) {
             output.enqueue(mergeSortedQueues(output.dequeue(), output.dequeue()));
         }

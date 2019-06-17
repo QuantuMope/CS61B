@@ -42,8 +42,13 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
-        // Your code here!
-        return null;
+        Queue<Queue<Item>> output = new Queue<>();
+        for (Item newItem : items) {
+            Queue<Item> newQueue = new Queue<>();
+            newQueue.enqueue(newItem);
+            output.enqueue(newQueue);
+        }
+        return output;
     }
 
     /**
@@ -61,8 +66,24 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
-        // Your code here!
-        return null;
+        Queue<Item> output = new Queue<>();
+        Queue<Item> remainingList = q1;
+        while (q1.size() != 0 || q2.size() != 0) {
+            if (q1.size() == 0 || q2.size() == 0) {
+                if (q1.size() == 0) { remainingList = q2; }
+
+                for (Item item : remainingList) {
+                    output.enqueue(item);
+                }
+                break;
+            }
+            if (q1.peek().compareTo(q2.peek()) <= 0) {
+                output.enqueue(q1.dequeue());
+            } else {
+                output.enqueue(q2.dequeue());
+            }
+        }
+        return output;
     }
 
     /**
@@ -77,7 +98,31 @@ public class MergeSort {
      */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+        Queue<Queue<Item>> output = makeSingleItemQueues(items);
+        //int size = singleItemQueues.size();
+        //boolean odd = false;
+        //if (singleItemQueues.size() % 2 == 1) { size++; odd = true; }
+
+//        for (; size != 0; size /= 2) {
+//            for (double operations = (double) size/2; operations > 0; operations--){
+//                if (odd) { odd = false; output.enqueue(output.dequeue()); continue; }
+//                if (output.size() == 1) { break; }
+//                output.enqueue(mergeSortedQueues(output.dequeue(), output.dequeue()));
+//            }
+//            if (output.size() == 1) { break; }
+//        }
+        while(output.size() != 1) {
+            output.enqueue(mergeSortedQueues(output.dequeue(), output.dequeue()));
+        }
+        return output.dequeue();
     }
+
+    public static void main(String[] args) {
+        Queue<String> input1 = new Queue<>();
+        Queue<String> input2 = new Queue<>();
+        input1.enqueue("Andrew");
+        input2.enqueue("Brandon");
+        Queue<String> test = mergeSortedQueues(input1, input2);
+    }
+
 }

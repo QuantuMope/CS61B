@@ -1,5 +1,11 @@
 import edu.princeton.cs.algs4.Queue;
 
+/**
+ * A QuickSort algorithm that uses a Queue data structure.
+ * @author Andrew Choi
+ * Date: 06/17/2019
+ */
+
 public class QuickSort {
     /**
      * Returns a new queue that contains the given queues catenated together.

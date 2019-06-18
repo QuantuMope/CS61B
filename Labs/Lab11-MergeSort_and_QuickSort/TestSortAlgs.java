@@ -1,8 +1,16 @@
 import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.Stopwatch;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.Random;
+
+/**
+ * Tests for QuickSort and MergeSort.
+ * Both tests are identical aside from random Integers generated.
+ * @author Andrew Choi
+ * Date: 06/17/2019
+ */
 
 public class TestSortAlgs {
 
@@ -24,7 +32,9 @@ public class TestSortAlgs {
             int n = rand.nextInt(51);
             secondQuickTest.enqueue(n);
         }
+        Stopwatch sw1 = new Stopwatch();
         Queue<Integer> sorted2 = QuickSort.quickSort(secondQuickTest);
+        System.out.println("QuickSort time is " + sw1.elapsedTime());
         assertEquals(secondQuickTest.size(), sorted2.size());
         assertTrue(isSorted(sorted2));
     }
@@ -47,9 +57,27 @@ public class TestSortAlgs {
             int n = rand.nextInt(51);
             secondMergeTest.enqueue(n);
         }
+        Stopwatch sw2 = new Stopwatch();
         Queue<Integer> sorted2 = MergeSort.mergeSort(secondMergeTest);
+        System.out.println("MergeSort time is " + sw2.elapsedTime());
         assertEquals(secondMergeTest.size(), sorted2.size());
         assertTrue(isSorted(sorted2));
+    }
+
+    @Test
+    public void timeComparisonTest() {
+        Random rand = new Random();
+        Queue<Integer> testQueue = new Queue<>();
+        for (int i = 0; i < 50; i++) {
+            int n = rand.nextInt(51);
+            testQueue.enqueue(n);
+        }
+        Stopwatch sw1 = new Stopwatch();
+        Queue<Integer> sorted1 = MergeSort.mergeSort(testQueue);
+        System.out.println("MergeSort time is " + sw1.elapsedTime());
+        Stopwatch sw2 = new Stopwatch();
+        Queue<Integer> sorted2 = QuickSort.quickSort(testQueue);
+        System.out.println("QuickSort time is " + sw2.elapsedTime());
     }
 
     /**

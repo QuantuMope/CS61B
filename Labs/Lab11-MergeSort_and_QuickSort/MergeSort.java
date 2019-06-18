@@ -1,5 +1,12 @@
 import edu.princeton.cs.algs4.Queue;
 
+/**
+ * A MergeSort algorithm that uses a Queue data structure.
+ * @author Andrew Choi
+ * Date: 06/16/2019
+ */
+
+
 public class MergeSort {
     /**
      * Removes and returns the smallest item that is in q1 or q2.

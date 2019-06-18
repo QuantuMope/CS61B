@@ -1,6 +1,5 @@
 package bearmaps.proj2c;
 
-
 import bearmaps.proj2c.server.handler.APIRouteHandlerFactory;
 
 /**

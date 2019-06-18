@@ -16,7 +16,7 @@ public class TestSortAlgs {
         quickSortTest.enqueue("Zeke");
         Queue<String> sorted = QuickSort.quickSort(quickSortTest);
         assertEquals(quickSortTest.size(), sorted.size());
-        assertTrue(isSorted(quickSortTest));
+        assertTrue(isSorted(sorted));
 
         Random rand = new Random();
         Queue<Integer> secondQuickTest = new Queue<>();

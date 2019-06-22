@@ -97,22 +97,30 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
             zoom += 1;
         }
 
-        // Finding necessary X coordinates.
-        int left = 0;
-        int right = 0;
-        double current = ROOT_ULLON;
-        //double rightCalc = ROOT_LRLON;
-        while (current < ullon) {
-            current += bestLonDPP;
-            left += 1;
-        }
-        right = left;
-        left -= 1;
-        while (current < lrlon) {
-            current += bestLonDPP;
-            right += 1;
-        }
 
+        // Bad Iterative Approach
+//        // Finding necessary X coordinates.
+//        int left = 0;
+//        int right = 0;
+//        double currentX = ROOT_ULLON;
+//        while (currentX < ullon) {
+//            currentX += bestLonDPP;
+//            left += 1;
+//        }
+//        right = left;
+//        left -= 1;
+//        while (currentX < lrlon) {
+//            currentX += bestLonDPP;
+//            right += 1;
+//        }
+//
+//        // Finding necessary Y coordinates.
+//        int up = 0;
+//        int down = 0;
+//        double currentY = ROOT_LRLAT;
+//        while (currentY < lrlat) {
+//            currentY
+//        }
 
 
         System.out.println("yo, wanna know the parameters given by the web browser? They are:");
@@ -121,6 +129,10 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
         System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
                 + "your browser.");
         return results;
+    }
+
+    private String pointContainer(double lon, double lat) {
+
     }
 
     @Override

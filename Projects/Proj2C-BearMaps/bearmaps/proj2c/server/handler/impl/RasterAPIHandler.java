@@ -17,8 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static bearmaps.proj2c.utils.Constants.SEMANTIC_STREET_GRAPH;
-import static bearmaps.proj2c.utils.Constants.ROUTE_LIST;
+import static bearmaps.proj2c.utils.Constants.*;
 
 /**
  * Handles requests from the web browser for map images. These images
@@ -84,8 +83,40 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      */
     @Override
     public Map<String, Object> processRequest(Map<String, Double> requestParams, Response response) {
-        //System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        //System.out.println(requestParams);
+
+        double lrlon = requestParams.get("lrlon");
+        double lrlat = requestParams.get("lrlat");
+        double ullon = requestParams.get("ullon");
+        double ullat = requestParams.get("ullat");
+        double desiredLonDPP = (lrlon - ullon) / requestParams.get("w");
+        double bestLonDPP = 0.000171661376953125;
+        int zoom = 0;
+        // Finding proper resolution.
+        while (bestLonDPP > desiredLonDPP) {
+            bestLonDPP /= 2;
+            zoom += 1;
+        }
+
+        // Finding necessary X coordinates.
+        int left = 0;
+        int right = 0;
+        double current = ROOT_ULLON;
+        //double rightCalc = ROOT_LRLON;
+        while (current < ullon) {
+            current += bestLonDPP;
+            left += 1;
+        }
+        right = left;
+        left -= 1;
+        while (current < lrlon) {
+            current += bestLonDPP;
+            right += 1;
+        }
+
+
+
+        System.out.println("yo, wanna know the parameters given by the web browser? They are:");
+        System.out.println(requestParams);
         Map<String, Object> results = new HashMap<>();
         System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
                 + "your browser.");

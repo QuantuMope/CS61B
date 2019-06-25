@@ -88,25 +88,29 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
         double lrlat = requestParams.get("lrlat");
         double ullon = requestParams.get("ullon");
         double ullat = requestParams.get("ullat");
+
+        double lonPerPixel = (ROOT_LRLON - ROOT_ULLON);
+
         double desiredLonDPP = (lrlon - ullon) / requestParams.get("w");
-        double bestLonDPP = 0.000171661376953125;
+        double bestLonDPP = (ROOT_LRLON - ROOT_ULLON) / requestParams.get("w");
         int zoom = 0;
         // Finding proper zoom.
         while (bestLonDPP > desiredLonDPP) {
             bestLonDPP /= 2;
             zoom += 1;
+            lonPerPixel /= 2;
             if (zoom == 7) { break; }
         }
 
-        int[] coordinates = coordinatesCalc(ullon, lrlon, ullat, lrlat, bestLonDPP);
+        int[] coordinates = coordinatesCalc(ullon, lrlon, ullat, lrlat, lonPerPixel);
         String[][] renderGrid = renderGridMaker(coordinates, zoom);
 
         Map<String, Object> results = new HashMap<>();
         results.put("render_grid", renderGrid);
-        results.put("raster_ul_lon", coordinates[0]);
-        results.put("raster_ul_lat", coordinates[2]);
-        results.put("raster_lr_lon", coordinates[1]);
-        results.put("raster_lr_lat", coordinates[3]);
+        results.put("raster_ul_lon", ROOT_ULLON + coordinates[0] * lonPerPixel);
+        results.put("raster_ul_lat", ROOT_ULLAT + coordinates[2] * lonPerPixel);
+        results.put("raster_lr_lon", ROOT_ULLON + coordinates[1] * lonPerPixel);
+        results.put("raster_lr_lat", ROOT_ULLAT + coordinates[3] * lonPerPixel);
         results.put("depth", zoom);
         results.put("query_success", true);
 
@@ -117,11 +121,11 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
         return results;
     }
 
-    private int[] coordinatesCalc(double leftLon, double rightLon, double topLat, double downLat, double LonDPP) {
-        int leftX = (int) ((leftLon - ROOT_ULLON) /  LonDPP);
-        int rightX = (int) (Math.ceil((ROOT_LRLON - rightLon) / LonDPP));
-        int topY = (int) (Math.ceil((ROOT_ULLAT - topLat) / LonDPP));
-        int downY = (int) ((downLat - ROOT_LRLAT) / LonDPP);
+    private int[] coordinatesCalc(double leftLon, double rightLon, double topLat, double downLat, double lonPerPixel) {
+        int leftX = (int) ((leftLon - ROOT_ULLON) /  lonPerPixel);
+        int rightX = (int) (Math.ceil((rightLon - ROOT_ULLON) / lonPerPixel));
+        int topY = (int) (Math.ceil((ROOT_ULLAT - topLat) / lonPerPixel));
+        int downY = (int) ((ROOT_ULLAT - downLat) / lonPerPixel);
         // leftX, rightX, topY, downY
         int[] coordinates = {leftX, rightX, topY, downY};
         return coordinates;
@@ -129,7 +133,7 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
 
     private String[][] renderGridMaker(int[] coordinates, int zoom) {
         int rangeX = coordinates[1] - coordinates[0];
-        int rangeY = coordinates[2] - coordinates[3];
+        int rangeY = coordinates[3] - coordinates[2];
         String[][] renderGrid = new String[rangeY][rangeX];
         int Y = coordinates[2];
         for (String[] row : renderGrid) {

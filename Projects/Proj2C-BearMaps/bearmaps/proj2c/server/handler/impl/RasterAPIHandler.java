@@ -83,49 +83,59 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      */
     @Override
     public Map<String, Object> processRequest(Map<String, Double> requestParams, Response response) {
+        Map<String, Object> results = new HashMap<>();
 
         double lrlon = requestParams.get("lrlon");
         double lrlat = requestParams.get("lrlat");
         double ullon = requestParams.get("ullon");
         double ullat = requestParams.get("ullat");
 
+
         double lonPerPixel = (ROOT_LRLON - ROOT_ULLON);
+        double latPerPixel = (ROOT_ULLAT - ROOT_LRLAT);
 
         double desiredLonDPP = (lrlon - ullon) / requestParams.get("w");
-        double bestLonDPP = (ROOT_LRLON - ROOT_ULLON) / requestParams.get("w");
+        double bestLonDPP = (ROOT_LRLON - ROOT_ULLON) / TILE_SIZE;
         int zoom = 0;
         // Finding proper zoom.
         while (bestLonDPP > desiredLonDPP) {
             bestLonDPP /= 2;
             zoom += 1;
             lonPerPixel /= 2;
+            latPerPixel /= 2;
             if (zoom == 7) { break; }
         }
 
-        int[] coordinates = coordinatesCalc(ullon, lrlon, ullat, lrlat, lonPerPixel);
+        int[] coordinates = coordinatesCalc(ullon, lrlon, ullat, lrlat, lonPerPixel, latPerPixel);
         String[][] renderGrid = renderGridMaker(coordinates, zoom);
 
-        Map<String, Object> results = new HashMap<>();
         results.put("render_grid", renderGrid);
         results.put("raster_ul_lon", ROOT_ULLON + coordinates[0] * lonPerPixel);
-        results.put("raster_ul_lat", ROOT_ULLAT + coordinates[2] * lonPerPixel);
+        results.put("raster_ul_lat", ROOT_ULLAT - coordinates[2] * latPerPixel);
         results.put("raster_lr_lon", ROOT_ULLON + coordinates[1] * lonPerPixel);
-        results.put("raster_lr_lat", ROOT_ULLAT + coordinates[3] * lonPerPixel);
+        results.put("raster_lr_lat", ROOT_ULLAT - coordinates[3] * latPerPixel);
         results.put("depth", zoom);
         results.put("query_success", true);
 
-        System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        System.out.println(requestParams);
-        System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
-                + "your browser.");
+        if ((ullon > lrlon || lrlat > ullat) ||
+            (lrlon < ROOT_ULLON || ullon > ROOT_LRLON || lrlat > ROOT_ULLAT || ullat < ROOT_LRLAT)) {
+            results.put("query_success", false);
+        }
+
+        //System.out.println("yo, wanna know the parameters given by the web browser? They are:");
+        //System.out.println(requestParams);
+        //System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
+        //        + "your browser.");
+        System.out.println(results);
         return results;
     }
 
-    private int[] coordinatesCalc(double leftLon, double rightLon, double topLat, double downLat, double lonPerPixel) {
+    private int[] coordinatesCalc(double leftLon, double rightLon, double topLat, double downLat,
+                                  double lonPerPixel, double latPerPixel) {
         int leftX = (int) ((leftLon - ROOT_ULLON) /  lonPerPixel);
         int rightX = (int) (Math.ceil((rightLon - ROOT_ULLON) / lonPerPixel));
-        int topY = (int) (Math.ceil((ROOT_ULLAT - topLat) / lonPerPixel));
-        int downY = (int) ((ROOT_ULLAT - downLat) / lonPerPixel);
+        int topY = (int) ((ROOT_ULLAT - topLat) / latPerPixel);
+        int downY = (int) (Math.ceil((ROOT_ULLAT - downLat) / latPerPixel));
         // leftX, rightX, topY, downY
         int[] coordinates = {leftX, rightX, topY, downY};
         return coordinates;

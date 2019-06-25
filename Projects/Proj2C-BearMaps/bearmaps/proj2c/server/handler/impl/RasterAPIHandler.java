@@ -91,14 +91,61 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
         double desiredLonDPP = (lrlon - ullon) / requestParams.get("w");
         double bestLonDPP = 0.000171661376953125;
         int zoom = 0;
-        // Finding proper resolution.
+        // Finding proper zoom.
         while (bestLonDPP > desiredLonDPP) {
             bestLonDPP /= 2;
             zoom += 1;
+            if (zoom == 7) { break; }
         }
 
+        int[] coordinates = coordinatesCalc(ullon, lrlon, ullat, lrlat, bestLonDPP);
+        String[][] renderGrid = renderGridMaker(coordinates, zoom);
 
-        // Bad Iterative Approach
+        Map<String, Object> results = new HashMap<>();
+        results.put("render_grid", renderGrid);
+        results.put("raster_ul_lon", coordinates[0]);
+        results.put("raster_ul_lat", coordinates[2]);
+        results.put("raster_lr_lon", coordinates[1]);
+        results.put("raster_lr_lat", coordinates[3]);
+        results.put("depth", zoom);
+        results.put("query_success", true);
+
+        System.out.println("yo, wanna know the parameters given by the web browser? They are:");
+        System.out.println(requestParams);
+        System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
+                + "your browser.");
+        return results;
+    }
+
+    private int[] coordinatesCalc(double leftLon, double rightLon, double topLat, double downLat, double LonDPP) {
+        int leftX = (int) ((leftLon - ROOT_ULLON) /  LonDPP);
+        int rightX = (int) (Math.ceil((ROOT_LRLON - rightLon) / LonDPP));
+        int topY = (int) (Math.ceil((ROOT_ULLAT - topLat) / LonDPP));
+        int downY = (int) ((downLat - ROOT_LRLAT) / LonDPP);
+        // leftX, rightX, topY, downY
+        int[] coordinates = {leftX, rightX, topY, downY};
+        return coordinates;
+    }
+
+    private String[][] renderGridMaker(int[] coordinates, int zoom) {
+        int rangeX = coordinates[1] - coordinates[0];
+        int rangeY = coordinates[2] - coordinates[3];
+        String[][] renderGrid = new String[rangeY][rangeX];
+        int Y = coordinates[2];
+        for (String[] row : renderGrid) {
+            int X = coordinates[0];
+            for (int i = 0; i < rangeX; i += 1) {
+                row[i] = "d" + zoom + "_x" + X + "_y" + Y + ".png";
+                X += 1;
+            }
+            Y += 1;
+        }
+        return renderGrid;
+    }
+
+
+
+    // Bad Iterative Approach
 //        // Finding necessary X coordinates.
 //        int left = 0;
 //        int right = 0;
@@ -121,19 +168,6 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
 //        while (currentY < lrlat) {
 //            currentY
 //        }
-
-
-        System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        System.out.println(requestParams);
-        Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
-                + "your browser.");
-        return results;
-    }
-
-    private String pointContainer(double lon, double lat) {
-
-    }
 
     @Override
     protected Object buildJsonResponse(Map<String, Object> result) {

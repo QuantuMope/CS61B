@@ -1,0 +1,4 @@
+Text file simply meant to redirect user 
+if they are looking for lab 12 or 13.
+
+Lab 12 and 13 are located in Proj3 Folder

@@ -1,6 +1,6 @@
 # CS61B Data Structures 
 
-Below is the course description/details. Completed the course assignments as a personal challenge and to learn more about data structures. The link below shows all project/hw/lab descriptions. <br />
+Below is the course description/details. Completed the course assignments as a personal challenge and to learn more about data structures. The link below shows all project/hw/lab descriptions. All course material has been completed with the exception of project 3 due to my desire to devote my time to other projects. I have also developed a similar personal project [kismet](https://github.com/QuantuMope/kismet) <br />
 https://sp19.datastructur.es/
 
 * * *
@@ -12,11 +12,22 @@ https://sp19.datastructur.es/
 
 ## Overview
 
-<p align="justify">
-The CS 61 series is an introduction to computer science, with particular emphasis on software and machines from a programmer's point of view. CS 61A covered high-level approaches to problem-solving, providing you with a variety of ways to organize solutions to programming problems as compositions of functions, collections of objects, or sets of rules. In CS 61B, we move to a somewhat more detailed (and to some extent, more basic) level of programming.
-<br><br>
-In 61A, the correctness of a program was our primary goal. In CS61B, we're concerned also with engineering. An engineer, it is said, is someone who can do for a dime what any fool can do for a dollar. Much of 61B will be concerned with the tradeoffs in time and memory for a variety of methods for structuring data. We'll also be concerned with the engineering knowledge and skills needed to build and maintain moderately large programs.
-</p>
+*Java Fundamentals*
+
+- The compile/execute cycle.
+- Primitive data types (integer, floating point, character, boolean); arrays; classes.
+- Interactive control structures.
+- Functions; recursion; overloading.
+- Inheritance; interfaces; exceptions; threads.
+
+*Data Structure and Algorithms*
+
+- Construction, modification, and traversal of linked list structures of various forms -- singly-linked, doubly-linked, and circular, with and without sentinels.
+- Construction, modification, and traversal of binary trees (in particular, binary search trees and expression trees).
+- Sorting of sequences by selection, insertion, quicksort, merge sort; binary search through a binary search tree of a sorted sequence.
+- Binary heaps.
+- Hashing.
+- Elementary graph structures and algorithms.
 
 ## HW and Labs
 
@@ -39,11 +50,3 @@ Each project has a specific theme:
 - Project 1: Basic Design, Testing, and Code Review
 - Project 2: Large Scale Design and Testing
 - Project 3: Working with an Existing Code Base
-
-## References
-* [Gitbook CS 61B - Josh Hug](https://joshhug.gitbooks.io/hug61b/content/)
-* [Head First Java - 2nd edition (pdf)](https://github.com/Zhenye-Na/cs61b-ucb/blob/master/docs/head-first-java-2nd-edition.pdf)
-* [A Java Reference - Assorted JAva Reference Material (pdf)](https://github.com/Zhenye-Na/cs61b-ucb/blob/master/docs/java.pdf)
-* [Open Data Structures (in Java)](http://opendatastructures.org/ods-java/ods-java-html.html)
-* [GeeksforGeeks - Data Structures](https://www.geeksforgeeks.org/data-structures/)
-* [Data Structures Into Java](http://www-inst.eecs.berkeley.edu/~cs61b/fa14/book2/data-structures.pdf)

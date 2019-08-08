@@ -1,7 +1,8 @@
 # CS61B Data Structures 
 
-Below is the course description/details. Completed the course assignments as a personal challenge and to learn more about data structures. The link below shows all project/hw/lab descriptions. All course material has been completed with the exception of project 3 due to my desire to devote my time to other projects. I have also developed a similar personal project [kismet](https://github.com/QuantuMope/kismet) <br />
-https://sp19.datastructur.es/
+Below is the course description. Completed the course assignments as a personal challenge and to learn more about data structures. The link below shows all project/hw/lab descriptions. All course material has been completed with the exception of project 3 due to my desire to devote my time to other projects as well having developed a similar personal project [kismet](https://github.com/QuantuMope/kismet). </br>
+
+## [Course Link](https://sp19.datastructur.es/)
 
 * * *
 
@@ -12,7 +13,7 @@ https://sp19.datastructur.es/
 
 ## Overview
 
-*Java Fundamentals*
+### Java Fundamentals
 
 - The compile/execute cycle.
 - Primitive data types (integer, floating point, character, boolean); arrays; classes.
@@ -20,7 +21,7 @@ https://sp19.datastructur.es/
 - Functions; recursion; overloading.
 - Inheritance; interfaces; exceptions; threads.
 
-*Data Structure and Algorithms*
+### Data Structure and Algorithms
 
 - Construction, modification, and traversal of linked list structures of various forms -- singly-linked, doubly-linked, and circular, with and without sentinels.
 - Construction, modification, and traversal of binary trees (in particular, binary search trees and expression trees).
